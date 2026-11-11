@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "product": "Ergonomic office chair (illustrative worked example)",
+    "version": 1,
+    "generatedBy": "hand-authored for studio preset",
+    "units": "per 1,000-unit cohort per year"
+  },
+  "inputs": {
+    "productName": "Ergonomic office chair (illustrative)",
+    "usStatement": "one ergonomic chair over a 10-year useful life (≈ 20,000 sitting hours)",
+    "serviceLifeYears": 10,
+    "utilizationHoursPerYear": 2000,
+    "cohortSize": 1000,
+    "baseYear": 2026,
+    "fxUsdEur": 0.92,
+    "co2eFactor": 1.8,
+    "virginShare": 0.85,
+    "scrapRate": 0.06,
+    "unitPrice": 249,
+    "cogs": 98,
+    "allocatedOverhead": 55,
+    "bom": [
+      { "component": "Frame", "family": "Powder-coated steel", "massKg": 4.2, "virginShare": 0.9 },
+      { "component": "Mechanism", "family": "Steel", "massKg": 1.1, "virginShare": 0.9 },
+      { "component": "Seat & back cushions", "family": "PU foam, textile", "massKg": 2.8, "virginShare": 1.0 },
+      { "component": "Upholstery fabric", "family": "Recycled PET + cotton", "massKg": 1.5, "virginShare": 0.95 },
+      { "component": "Plastic shrouds & armrests", "family": "PP", "massKg": 1.2, "virginShare": 0.8 },
+      { "component": "Castors & piston", "family": "Steel, PU", "massKg": 0.6, "virginShare": 0.9 }
+    ]
+  },
+  "params": {
+    "scrap_pp": 0.012,
+    "recycled_uplift": 0.04,
+    "return_rate": 0.3,
+    "closed_loop_yield": 0.02,
+    "recyc_design_uplift": 0.5,
+    "reman_units": 40,
+    "reman_yield": 0.12,
+    "valorized_share": 0.2,
+    "mass_reduction": 0.018,
+    "leasing_uplift": 1.12,
+    "reuse_share": 0.008,
+    "refurb_share": 0.06,
+    "life_ext_repair": 0.022,
+    "life_ext_durability": 0.018,
+    "life_ext_care": 0.012,
+    "unsold_units": 45
+  },
+  "levers": [
+    { "code": "1a", "gates": [true,true,true], "included": true, "costEurPer1000": -50 },
+    { "code": "1b", "gates": [true,true,true], "included": true, "costEurPer1000": -120 },
+    { "code": "1c", "gates": [true,true,true], "included": true, "costEurPer1000": -90 },
+    { "code": "2a", "gates": [true,true,true], "included": true, "costEurPer1000": 80 },
+    { "code": "2b", "gates": [false,true,true], "included": false, "costEurPer1000": 0 },
+    { "code": "3a", "gates": [true,true,true], "included": true, "costEurPer1000": -30 },
+    { "code": "3b", "gates": [true,true,true], "included": true, "costEurPer1000": -40 },
+    { "code": "4a", "gates": [true,true,true], "included": true, "costEurPer1000": -300 },
+    { "code": "4b", "gates": [true,true,true], "included": true, "costEurPer1000": -450 },
+    { "code": "5a", "gates": [true,true,true], "included": true, "costEurPer1000": -600 },
+    { "code": "5b", "gates": [true,true,true], "included": true, "costEurPer1000": -200 },
+    { "code": "5c", "gates": [false,true,true], "included": false, "costEurPer1000": 0 },
+    { "code": "6a", "gates": [true,true,true], "included": true, "costEurPer1000": -100 },
+    { "code": "6b", "gates": [true,true,true], "included": true, "costEurPer1000": -2500 },
+    { "code": "6c", "gates": [true,true,true], "included": true, "costEurPer1000": -80 },
+    { "code": "7a", "gates": [true,true,true], "included": true, "costEurPer1000": 400 },
+    { "code": "7b", "gates": [true,true,true], "included": true, "costEurPer1000": -300 },
+    { "code": "7c", "gates": [true,true,true], "included": true, "costEurPer1000": 600 },
+    { "code": "7d", "gates": [true,true,true], "included": true, "costEurPer1000": 350 },
+    { "code": "8a", "gates": [true,true,true], "included": true, "costEurPer1000": -900 }
+  ]
+}

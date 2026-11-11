@@ -18,7 +18,7 @@ const NAV = [
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const { resetToDrillExample, touched } = useStudio();
+  const { resetToDrillExample, touched, preset, loadPreset } = useStudio();
 
   return (
     <header className="sticky top-0 z-40 border-b border-mist bg-paper/90 backdrop-blur">
@@ -60,13 +60,16 @@ export function SiteHeader() {
                 </Link>
               );
             })}
+            <button onClick={() => loadPreset(preset === "drill" ? "chair" : "drill")} title="Switch example product" className="ml-1 whitespace-nowrap rounded-full border border-mist bg-white px-3 py-1.5 text-[11px] font-semibold text-steel2 hover:text-ink">
+              {preset === "drill" ? "Drill ▾" : "Chair ▾"}
+            </button>
             {touched && (
               <button
                 onClick={resetToDrillExample}
                 title="Discard your edits and reload the cordless-drill worked example"
-                className="ml-1 whitespace-nowrap rounded-full border border-amber2/60 px-3 py-1.5 text-[12.5px] font-semibold text-amber2 hover:bg-amber hover:text-ink"
+                className="whitespace-nowrap rounded-full border border-amber2/60 px-3 py-1.5 text-[12.5px] font-semibold text-amber2 hover:bg-amber hover:text-ink"
               >
-                Reset example
+                Reset
               </button>
             )}
           </nav>

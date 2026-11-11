@@ -1,5 +1,7 @@
 export type Confidence = "High" | "Medium" | "Low" | "—";
 
+export type Currency = "EUR" | "USD";
+
 export interface BomComponent {
   component: string;
   family: string;
@@ -22,6 +24,7 @@ export interface ProductInputs {
   cogs: number;
   allocatedOverhead: number;
   bom: BomComponent[];
+  displayCurrency?: Currency;
 }
 
 /** Same keys as fixtures/drill.json params */

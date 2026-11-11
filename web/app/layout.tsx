@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import { StudioProvider } from "@/lib/AppContext";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SummaryBar } from "@/components/SummaryBar";
 import { SiteFooter } from "@/components/SiteFooter";
 
 const fraunces = Fraunces({
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="h-full min-h-screen flex flex-col">
         <StudioProvider>
           <SiteHeader />
+          <SummaryBar />
           <main className="flex-1 w-full">{children}</main>
           <SiteFooter />
         </StudioProvider>

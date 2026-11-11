@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { DRILL_DEFAULT } from "./defaults";
+import { DRILL_DEFAULT, CHAIR_DEFAULT } from "./defaults";
 import { computeLevers, sortLevers, summarize } from "./model";
 import type {
   Confidence,
@@ -23,6 +23,8 @@ import type {
   BomComponent,
 } from "./types";
 
+export type PresetId = "drill" | "chair";
+
 const STORAGE_KEY = "circularity-studio-state-v1";
 
 export interface StudioContextValue {
@@ -34,6 +36,8 @@ export interface StudioContextValue {
   /** true once a saved session has been restored from localStorage */
   restored: boolean;
   resetToDrillExample: () => void;
+  loadPreset: (id: PresetId) => void;
+  preset: PresetId;
   setInput: <K extends keyof ProductInputs>(key: K, value: ProductInputs[K]) => void;
   setParam: <K extends keyof ModelParams>(key: K, value: number) => void;
   setGate: (code: string, gateIndex: 0 | 1 | 2, value: boolean) => void;
@@ -45,6 +49,7 @@ export interface StudioContextValue {
   addBomRow: () => void;
   removeBomRow: (index: number) => void;
   touched: boolean;
+  setStateDirect: (s: StudioState) => void;
 }
 
 const StudioContext = createContext<StudioContextValue | null>(null);
@@ -53,17 +58,41 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StudioState>(() => DRILL_DEFAULT);
   const [restored, setRestored] = useState(false);
   const [touched, setTouched] = useState(false);
+  const [preset, setPreset] = useState<PresetId>("drill");
 
   // restore saved session after mount (SSR renders drill defaults → consistent hydration)
   useEffect(() => {
     try {
+      // priority: URL hash share link
+      const { stateFromHash } = await_import_share();
+      function await_import_share() {
+        // inline to avoid async import issues
+        try {
+          const hash = window.location.hash;
+          if (hash.startsWith("#s=")) {
+            const s = hash.slice(3);
+            const b64 = s.replace(/-/g, "+").replace(/_/g, "/");
+            const pad = b64.length % 4 === 0 ? "" : "=".repeat(4 - (b64.length % 4));
+            const parsed = JSON.parse(decodeURIComponent(escape(atob(b64 + pad)))) as StudioState;
+            setState((prev) => ({
+              ...prev,
+              ...parsed,
+              inputs: { ...prev.inputs, ...parsed.inputs, bom: parsed.inputs?.bom ?? prev.inputs.bom, displayCurrency: parsed.inputs?.displayCurrency ?? "EUR" },
+              params: { ...prev.params, ...parsed.params },
+            }));
+            setTouched(true);
+            return { stateFromHash: () => null };
+          }
+        } catch {}
+        return { stateFromHash: () => null };
+      }
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as StudioState;
         setState((prev) => ({
           ...prev,
           ...parsed,
-          inputs: { ...prev.inputs, ...parsed.inputs, bom: parsed.inputs?.bom ?? prev.inputs.bom },
+          inputs: { ...prev.inputs, ...parsed.inputs, bom: parsed.inputs?.bom ?? prev.inputs.bom, displayCurrency: parsed.inputs?.displayCurrency ?? "EUR" },
           params: { ...prev.params, ...parsed.params },
         }));
         setTouched(true);
@@ -90,9 +119,17 @@ export function StudioProvider({ children }: { children: ReactNode }) {
 
   const resetToDrillExample = useCallback(() => {
     setState(DRILL_DEFAULT);
+    setPreset("drill");
     window.localStorage.removeItem(STORAGE_KEY);
     setTouched(false);
   }, []);
+
+  const loadPreset = useCallback((id: PresetId) => {
+    setState(id === "chair" ? CHAIR_DEFAULT : DRILL_DEFAULT);
+    setPreset(id);
+    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(id === "chair" ? CHAIR_DEFAULT : DRILL_DEFAULT)); } catch {}
+    mark();
+  }, [mark]);
 
   const setInput = useCallback(<K extends keyof ProductInputs>(key: K, value: ProductInputs[K]) => {
     setState((s) => ({ ...s, inputs: { ...s.inputs, [key]: value } }));
@@ -161,14 +198,24 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     mark();
   }, [mark]);
 
+  const setStateDirect = useCallback((s: StudioState) => {
+    setState((prev) => ({
+      ...prev,
+      ...s,
+      inputs: { ...prev.inputs, ...s.inputs, bom: s.inputs?.bom ?? prev.inputs.bom, displayCurrency: s.inputs?.displayCurrency ?? "EUR" },
+      params: { ...prev.params, ...s.params },
+    }));
+    mark();
+  }, [mark]);
+
   const { factors, levers } = useMemo(() => computeLevers(state), [state]);
   const sorted = useMemo(() => sortLevers(levers), [levers]);
   const summary = useMemo(() => summarize(levers), [levers]);
 
   const value: StudioContextValue = {
     state, factors, levers, sorted, summary, restored,
-    resetToDrillExample, setInput, setParam, setGate, setCost,
-    setOverride, setBasis, setConfidence, setBomRow, addBomRow, removeBomRow, touched,
+    resetToDrillExample, loadPreset, preset, setInput, setParam, setGate, setCost,
+    setOverride, setBasis, setConfidence, setBomRow, addBomRow, removeBomRow, touched, setStateDirect,
   };
 
   return <StudioContext.Provider value={value}>{children}</StudioContext.Provider>;

@@ -6,6 +6,8 @@ import Link from "next/link";
 import { ArrowRight, Download, Info, LineChart } from "lucide-react";
 import { useStudio } from "@/lib/AppContext";
 import { EChart } from "@/components/EChart";
+import { MaterialFlow } from "@/components/MaterialFlow";
+import { CostWaterfall } from "@/components/CostWaterfall";
 import { cumulativeKg } from "@/lib/model";
 
 const SAVE = "#1f9d66";
@@ -15,25 +17,26 @@ const INK = "#0e1f38";
 
 export default function CurvePage() {
   const { sorted, summary, state, levers } = useStudio();
-  const [variant, setVariant] = useState<"A" | "B">("B");
   const [showCumulative, setShowCumulative] = useState(false);
   const chartRef = useRef<echarts.ECharts | null>(null);
+  const displayCurrency = state.inputs.displayCurrency ?? "EUR";
+  const fx = state.inputs.fxUsdEur || 1;
 
-  const unit = variant === "A" ? "USD per kg virgin avoided" : "EUR per kg virgin avoided";
-  const unitShort = variant === "A" ? "USD / kg" : "EUR / kg";
+  const unit = displayCurrency === "EUR" ? "EUR per kg virgin avoided" : "USD per kg virgin avoided";
+  const unitShort = displayCurrency === "EUR" ? "EUR / kg" : "USD / kg";
   const cum = cumulativeKg(sorted);
   const totalKg = cum.length ? cum[cum.length - 1] : 0;
 
-  // segment per lever: [start, end, costPerKg, kg, code]
+  // segment per lever: [start, end, costPerKg, kg, code, confidence]
   const segments = useMemo(() => {
     let acc = 0;
     return sorted.map((l) => {
       const start = acc;
       acc += l.kg;
-      const cost = variant === "A" ? l.usdPerKg ?? 0 : l.eurPerKg ?? 0;
-      return { start, end: acc, cost, kg: l.kg, code: l.code, name: l.name, tier: l.tier, eurPerKg: l.eurPerKg, usdPerKg: l.usdPerKg, costEurPer1000: l.costEurPer1000, co2eKg: l.co2eKg };
+      const cost = displayCurrency === "EUR" ? l.eurPerKg ?? 0 : l.usdPerKg ?? 0;
+      return { start, end: acc, cost, kg: l.kg, code: l.code, name: l.name, tier: l.tier, eurPerKg: l.eurPerKg, usdPerKg: l.usdPerKg, costEurPer1000: l.costEurPer1000, co2eKg: l.co2eKg, confidence: l.confidence };
     });
-  }, [sorted, variant]);
+  }, [sorted, displayCurrency]);
 
   const xMax = Math.max(1, Math.ceil(totalKg * 1.02));
   const option = useMemo<echarts.EChartsCoreOption>(
@@ -57,7 +60,7 @@ export default function CurvePage() {
             `€ ${eur === null ? "n/a" : eur.toFixed(2)} per kg &nbsp;·&nbsp; $ ${usd === null ? "n/a" : usd.toFixed(2)}`,
             `kg avoided / 1,000 units: <b>${lever.kg.toFixed(1)}</b> (cumulative ${v[1].toFixed(1)})`,
             `Δcost: <b>${lever.costEurPer1000 < 0 ? "−" : ""}€${Math.abs(lever.costEurPer1000).toFixed(0)}</b> / 1,000 units`,
-            `CO₂e avoided: <b>${lever.co2eKg.toFixed(0)} kg</b> · Tier <b>${lever.tier ?? "—"}</b>`,
+            `CO₂e avoided: <b>${lever.co2eKg.toFixed(0)} kg</b> · Tier <b>${lever.tier ?? "—"}</b> · Confidence <b>${lever.confidence}</b>`,
           ].join("<br/>");
         },
       },
@@ -101,11 +104,17 @@ export default function CurvePage() {
             const start = api.value(0) as number;
             const cost = api.value(2) as number;
             const end = api.value(1) as number;
+            const code = api.value(4) as string;
+            const seg = segments.find((s: { code: string }) => s.code === code);
+            const conf = seg?.confidence ?? "—";
             const yZero = api.coord([start, 0])[1] as number;
             const yCost = api.coord([start, cost])[1] as number;
             const xStart = api.coord([start, 0])[0] as number;
             const xEnd = api.coord([end, 0])[0] as number;
             const gap = 1.25;
+            const base = cost < 0 ? SAVE : cost > 0 ? COST : NEUTRAL;
+            // Low confidence = hatched / lighter with opacity
+            const opacity = conf === "Low" ? 0.45 : conf === "Medium" ? 0.8 : 1;
             return {
               type: "rect",
               clip: true,
@@ -116,7 +125,10 @@ export default function CurvePage() {
                 height: Math.abs(yZero - yCost),
               },
               style: api.style({
-                fill: cost < 0 ? SAVE : cost > 0 ? COST : NEUTRAL,
+                fill: base,
+                opacity,
+                stroke: conf === "Low" ? "#0e1f38" : "none",
+                lineDash: conf === "Low" ? [3,3] : undefined,
               }),
             };
           },
@@ -147,7 +159,7 @@ export default function CurvePage() {
       ],
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [segments, totalKg, showCumulative, unit, unitShort],
+    [segments, totalKg, showCumulative, unit, unitShort, displayCurrency],
   );
 
   const downloadPng = () => {
@@ -156,11 +168,11 @@ export default function CurvePage() {
     const url = chart.getDataURL({ type: "png", pixelRatio: 2, backgroundColor: "#f7f5f0" });
     const a = document.createElement("a");
     a.href = url;
-    a.download = `circularity-cost-curve-variant-${variant.toLowerCase()}.png`;
+    a.download = `circularity-cost-curve-${displayCurrency.toLowerCase()}.png`;
     a.click();
   };
 
-  const currency = variant === "A" ? "$" : "€";
+  const currency = displayCurrency === "EUR" ? "€" : "$";
   const excludedLevers = levers.filter((l) => !l.included).map((l) => l.code);
 
   if (sorted.length === 0) {
@@ -190,23 +202,10 @@ export default function CurvePage() {
           <h1 className="h-display mt-2 text-3xl font-semibold">Width is the kg avoided.</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-steel2">
             Bar height is cost per kg avoided (negative = the lever pays for itself). Width is kg avoided
-            per 1,000 units. Hover any bar for the numbers. Variant B (EUR) is the default; Variant A shows USD.
+            per 1,000 units. Hover any bar for the numbers. Currency: {currency} — change it on Profile.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex rounded-full border border-mist bg-white p-1" role="tablist" aria-label="Variant">
-            {(["A", "B"] as const).map((v) => (
-              <button
-                key={v}
-                role="tab"
-                aria-selected={variant === v}
-                onClick={() => setVariant(v)}
-                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-colors ${variant === v ? "bg-ink text-paper" : "text-steel2 hover:text-ink"}`}
-              >
-                Variant {v} {v === "A" ? "· USD" : "· EUR"}
-              </button>
-            ))}
-          </div>
           <button
             onClick={() => setShowCumulative((s) => !s)}
             aria-pressed={showCumulative}
@@ -221,8 +220,19 @@ export default function CurvePage() {
         </div>
       </div>
 
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        <MaterialFlow />
+        <CostWaterfall />
+      </div>
+
       <div className="card mt-6 p-4 sm:p-6">
         <EChart option={option} height={440} instanceRef={chartRef} />
+        <div className="mt-3 flex flex-wrap gap-3 text-[11px] text-steel2">
+          <span className="flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-sm bg-[#1f9d66] opacity-100" /> High confidence — solid</span>
+          <span className="flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-sm bg-[#1f9d66] opacity-80" /> Medium — 80%</span>
+          <span className="flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-sm border border-ink bg-[#1f9d66] opacity-45" /> Low — 45% hatched (inspect basis)</span>
+          <span className="ml-auto flex gap-2"><span className="text-save">● below zero (saves)</span><span className="text-cost">● above zero (costs)</span></span>
+        </div>
       </div>
 
       {/* ---------- reading the curve ---------- */}
@@ -231,7 +241,7 @@ export default function CurvePage() {
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-steel3">Sorted read — what the board should see</p>
           <table className="table-plain mt-2 w-full">
             <thead>
-              <tr><th>#</th><th>Code</th><th>Lever</th><th className="text-right">kg /1,000</th><th className="text-right">{currency} / kg</th><th className="text-right">Δcost €</th><th>Tier</th></tr>
+              <tr><th>#</th><th>Code</th><th>Lever</th><th className="text-right">kg /1,000</th><th className="text-right">{currency} / kg</th><th className="text-right">Δcost {currency}</th><th>Tier</th></tr>
             </thead>
             <tbody>
               {sorted.map((l, i) => (
@@ -240,8 +250,8 @@ export default function CurvePage() {
                   <td className="kpi font-bold">{l.code}</td>
                   <td>{l.name}</td>
                   <td className="kpi text-right">{l.kg.toFixed(1)}</td>
-                  <td className={`kpi text-right ${(l.eurPerKg ?? 0) < 0 ? "text-save" : "text-cost"}`}>{variant === "A" ? l.usdPerKg?.toFixed(2) : l.eurPerKg?.toFixed(2)}</td>
-                  <td className="kpi text-right">{l.costEurPer1000 < 0 ? "−" : ""}€{Math.abs(l.costEurPer1000).toLocaleString()}</td>
+                  <td className={`kpi text-right ${(l.eurPerKg ?? 0) < 0 ? "text-save" : "text-cost"}`}>{displayCurrency === "EUR" ? l.eurPerKg?.toFixed(2) : l.usdPerKg?.toFixed(2)}</td>
+                  <td className="kpi text-right">{l.costEurPer1000 < 0 ? "−" : ""}{currency}{Math.abs((displayCurrency === "EUR" ? l.costEurPer1000 : l.costEurPer1000 / fx)).toLocaleString()}</td>
                   <td><span className={`chip ${l.tier === "T1" ? "chip-save" : l.tier === "T2" ? "chip-amber" : "chip-slate"}`}>{l.tier}</span></td>
                 </tr>
               ))}

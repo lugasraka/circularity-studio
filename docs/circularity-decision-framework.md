@@ -4,7 +4,7 @@
 
 | Document control | |
 |---|---|
-| Version | 1.2 (November 2026) |
+| Version | 1.3 (November 2026) |
 | Status | Released for internal and external sharing |
 | Audience | Product managers, sustainability leads, finance/strategy, executive sponsors; general business readers |
 | Scope | Any manufactured product; generic method with an illustrative worked example |
@@ -251,6 +251,8 @@ This is intentional. A decision framework that quietly loads speculative revenue
 ## 5. Worked example: a cordless power drill (illustrative)
 
 > **All numbers below are illustrative.** They are constructed to be internally consistent and to encode typical economics for consumer hardware (leasing and over-production most strongly negative; repair, durability, care most strongly positive). They are **not** measurements of any real product or company. Replace them with your data before deciding anything.
+>
+> A second illustrative preset ships in the web app — an ergonomic office chair (`web/lib/fixtures/chair.json`: 11.4 kg, 10-year US, 85% virgin share, 6% scrap) using the same 20-lever taxonomy. The drill remains the canonical worked example for this document; the chair exists to show the method transfers.
 
 ### 5.1 Product profile and functional unit
 
@@ -579,11 +581,17 @@ flowchart LR
     P1["Phase 1<br/>This document<br/>(method + worked example)"] --> P2["Phase 2<br/>Excel template<br/>(input → lever library → CCC)"] --> P3["Phase 3<br/>Python model + web app<br/>(guided inputs → live CCC)"]
 ```
 
-**Phase 2 — Spreadsheet template (next).** A workbook with: (1) *README/instructions* tab (mirrors §6), (2) *Product profile* input tab (§6.1 fields), (3) *BOM & factor calculator* (§5.2), (4) *Lever library* with the 20 sub-levers, applicability gates and per-lever Δkg/Δcost formula slots (§6.2–6.3), (5) *CCC output* tab generating both Variant A and Variant B charts with one click, (6) *Sensitivities* tab (§6.4), (7) *Decision summary* auto-filling the Tier table (§7). Validation rules and an assumptions register are built into the tabs.
+**Phase 2 — Spreadsheet template (done).** Workbook `templates/circularity-cost-curve-template.xlsx` mirrors §6: profile inputs, BOM/factor calculator, 20-lever library with gates, quantification, CCC output, sensitivities, and decision summary. Validation rules and an assumptions register are built in.
 
-**Phase 3 — Web app (done as the Next.js app in `web/`).** The same formulas as typed TypeScript functions with parity tests against the Python fixture (`fixtures/drill.json`): the telescoping identity holds to machine precision, and all worked-example values (525 kg, −4,468 €, 1,155 kg CO₂e) reproduce exactly. Static export, no backend, deployable to any static host; includes live curve, auto-tiering, and back-filled Excel export of the Phase 2 template.
+**Phase 3 — Web app (done as the Next.js app in `web/`).** Same formulas as typed TypeScript with parity tests against Python fixture (`fixtures/drill.json`): identity to machine precision, 525 kg / −4,469 € / 1,155 kg CO₂e reproduce exactly. Static export, no backend.
 
-**Acceptance criteria across phases:** same identity holds; same lever codes; same sorting; same sign convention; same exclusions; the drill worked example reproduces its tables in all three artifacts.
+**Web app evolution (P0–P2, Nov 2026):**
+
+- *P0 stakeholder clarity:* Profile split into Essentials/Advanced, single display currency (EUR/USD set once), persistent summary strip, glossary tooltips, and a board-ready executive one-pager on Decision (auto-narrative + print/PDF).
+- *P1 functional:* Quantify split into Impact vs Effort views, input validation, share-link / JSON import-export with URL-hash state, confidence encoding on the curve (Low = faded hatched bar), and a package builder for mutually-exclusive bundles (addresses the upper-bound caveat in §7–8).
+- *P2 insight & breadth:* sensitivity tornado (±20% on all 16 model parameters), material-flow and € waterfall on the Curve, and a second illustrative preset — ergonomic office chair (`web/lib/fixtures/chair.json`, 11.4 kg, 10-yr US) — so the same taxonomy can be swapped without re-entering a BOM.
+
+**Acceptance criteria across phases:** same identity holds; same lever codes; same sorting; same sign convention; same exclusions; drill worked example reproduces in all three artifacts.
 
 ---
 
@@ -591,6 +599,7 @@ flowchart LR
 
 | Version | Date | Change |
 |---|---|---|
+| 1.3 | Nov 2026 | Web app P0–P2 delivered: single currency, summary strip + glossary + executive one-pager, Quantify split + validation + share links, confidence on curve + package builder, sensitivity tornado + material flow + € waterfall, second chair preset. Variant B is the web-app default; Variant A remains a documentation-only comparison |
 | 1.2 | Nov 2026 | Variant B rendering aligned with the canonical convention: bar width ∝ kg avoided on a cumulative-kg x-axis (web app). Cumulative line is now an overlay option; spreadsheet keeps equal widths (native charts cannot vary bar width per category) |
 | 1.1 | Nov 2026 | Factor 3 corrected: P / US = product mass per service-year (1.4 kg / 8 yr = 0.175), making the telescoping identity exact (VM/US ≡ (VM/TM)×(TM/P)×(P/US) = 0.170 kg per drill-year) |
 | 1.0 | Nov 2026 | First release: method, 20-lever taxonomy, CCC Variants A & B, cordless-drill worked example, roadmap |

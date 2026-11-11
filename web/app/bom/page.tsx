@@ -1,11 +1,13 @@
 "use client";
 
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, AlertTriangle } from "lucide-react";
 import { useStudio } from "@/lib/AppContext";
+import { validateInputs } from "@/lib/validation";
 
 export default function BomPage() {
   const { state, factors: f, setBomRow, addBomRow, removeBomRow } = useStudio();
   const bom = state.inputs.bom;
+  const bomErrs = validateInputs(state.inputs).filter(e=>e.field.startsWith("bom"));
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
@@ -16,6 +18,7 @@ export default function BomPage() {
         ({Math.round(state.inputs.virginShare * 100)}%) — set it per component when you can, e.g.
         a 50% PCR housing.
       </p>
+      {bomErrs.length>0 && <div className="mt-3 flex items-center gap-2 rounded-xl border border-cost/30 bg-costbg p-3 text-[12px] text-cost font-semibold"><AlertTriangle size={14}/> {bomErrs.map(e=>e.message).join(" · ")}</div>}
 
       <div className="mt-8 grid gap-6 lg:grid-cols-12">
         <div className="card overflow-hidden lg:col-span-8">
