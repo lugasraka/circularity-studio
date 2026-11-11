@@ -1,0 +1,430 @@
+{
+  "meta": {
+    "product": "Cordless power drill (illustrative worked example)",
+    "version": 1,
+    "generatedBy": "tools/export_drill_fixture.py",
+    "units": "per 1,000-unit cohort per year"
+  },
+  "inputs": {
+    "productName": "Cordless power drill (illustrative example)",
+    "usStatement": "one cordless drill over an 8-year useful life (≈ 800 operating hours)",
+    "serviceLifeYears": 8,
+    "utilizationHoursPerYear": 100,
+    "cohortSize": 1000,
+    "baseYear": 2026,
+    "fxUsdEur": 0.92,
+    "co2eFactor": 2.2,
+    "virginShare": 0.9,
+    "scrapRate": 0.08,
+    "unitPrice": 89,
+    "cogs": 42,
+    "allocatedOverhead": 22,
+    "bom": [
+      {
+        "component": "Motor & drivetrain",
+        "family": "Copper, steel",
+        "massKg": 0.35,
+        "virginShare": 0.9
+      },
+      {
+        "component": "Gearbox & chuck",
+        "family": "Steel",
+        "massKg": 0.18,
+        "virginShare": 0.9
+      },
+      {
+        "component": "Battery pack",
+        "family": "Li-ion cells, casing",
+        "massKg": 0.3,
+        "virginShare": 0.9
+      },
+      {
+        "component": "Housing & handle",
+        "family": "PA6-GF / ABS",
+        "massKg": 0.45,
+        "virginShare": 0.9
+      },
+      {
+        "component": "Electronics (PCB, controller)",
+        "family": "Copper, ICs, PCB",
+        "massKg": 0.12,
+        "virginShare": 0.9
+      }
+    ]
+  },
+  "params": {
+    "scrap_pp": 0.0145,
+    "recycled_uplift": 0.005,
+    "return_rate": 0.25,
+    "closed_loop_yield": 0.026,
+    "recyc_design_uplift": 0.75,
+    "reman_units": 30,
+    "reman_yield": 0.14,
+    "valorized_share": 0.25,
+    "mass_reduction": 0.027,
+    "leasing_uplift": 1.148,
+    "reuse_share": 0.0114,
+    "refurb_share": 0.039,
+    "life_ext_repair": 0.017,
+    "life_ext_durability": 0.013,
+    "life_ext_care": 0.01,
+    "unsold_units": 68
+  },
+  "levers": [
+    {
+      "code": "1a",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -3
+    },
+    {
+      "code": "1b",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -6
+    },
+    {
+      "code": "1c",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -9
+    },
+    {
+      "code": "2a",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": 4
+    },
+    {
+      "code": "2b",
+      "gates": [
+        true,
+        false,
+        true
+      ],
+      "included": false,
+      "costEurPer1000": 0
+    },
+    {
+      "code": "3a",
+      "gates": [
+        true,
+        false,
+        true
+      ],
+      "included": false,
+      "costEurPer1000": 0
+    },
+    {
+      "code": "3b",
+      "gates": [
+        false,
+        true,
+        true
+      ],
+      "included": false,
+      "costEurPer1000": 0
+    },
+    {
+      "code": "4a",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -47
+    },
+    {
+      "code": "4b",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -85
+    },
+    {
+      "code": "5a",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -80
+    },
+    {
+      "code": "5b",
+      "gates": [
+        true,
+        true,
+        false
+      ],
+      "included": false,
+      "costEurPer1000": 0
+    },
+    {
+      "code": "5c",
+      "gates": [
+        false,
+        true,
+        true
+      ],
+      "included": false,
+      "costEurPer1000": 0
+    },
+    {
+      "code": "6a",
+      "gates": [
+        false,
+        true,
+        true
+      ],
+      "included": false,
+      "costEurPer1000": 0
+    },
+    {
+      "code": "6b",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -3560
+    },
+    {
+      "code": "6c",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -31
+    },
+    {
+      "code": "7a",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": 336
+    },
+    {
+      "code": "7b",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -172
+    },
+    {
+      "code": "7c",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": 374
+    },
+    {
+      "code": "7d",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": 471
+    },
+    {
+      "code": "8a",
+      "gates": [
+        true,
+        true,
+        true
+      ],
+      "included": true,
+      "costEurPer1000": -1661
+    }
+  ],
+  "expected": {
+    "massKg": 1.4,
+    "scrapKg": 0.11199999999999999,
+    "totalMaterialsKg": 1.512,
+    "vmProductKg": 1.26,
+    "vmScrapKg": 0.10079999999999999,
+    "virginMaterialKg": 1.3608,
+    "circulatedKg": 0.1512,
+    "ratio1": 0.9,
+    "ratio2": 1.08,
+    "ratio3": 0.175,
+    "vmUsPerYear": 0.1701,
+    "vmUsCohort": 170.1,
+    "cohortVm": 1360.8,
+    "ebitUnit": 25,
+    "ebitCohort": 25000,
+    "leverKg": {
+      "1a": 7.56,
+      "1b": 9.099999999999998,
+      "1c": 12.494999999999997,
+      "2a": 5.88,
+      "2b": 0.0,
+      "3a": 0.0,
+      "3b": 0.0,
+      "4a": 21.924000000000003,
+      "4b": 27.999999999999996,
+      "5a": 37.8,
+      "5b": 0.0,
+      "5c": 0.0,
+      "6a": 0.0,
+      "6b": 180.48780487804865,
+      "6c": 15.959999999999999,
+      "7a": 23.8,
+      "7b": 54.599999999999994,
+      "7c": 18.199999999999996,
+      "7d": 13.999999999999998,
+      "8a": 95.19999999999999
+    },
+    "eurPerKg": {
+      "1a": -0.39682539682539686,
+      "1b": -0.6593406593406594,
+      "1c": -0.7202881152460986,
+      "2a": 0.6802721088435374,
+      "2b": null,
+      "3a": null,
+      "3b": null,
+      "4a": -2.1437693851486954,
+      "4b": -3.035714285714286,
+      "5a": -2.1164021164021167,
+      "5b": null,
+      "5c": null,
+      "6a": null,
+      "6b": -19.72432432432434,
+      "6c": -1.942355889724311,
+      "7a": 14.117647058823529,
+      "7b": -3.1501831501831505,
+      "7c": 20.549450549450555,
+      "7d": 33.642857142857146,
+      "8a": -17.44747899159664
+    },
+    "usdPerKg": {
+      "1a": -0.4313319530710835,
+      "1b": -0.716674629718108,
+      "1c": -0.7829218643979332,
+      "2a": 0.7394262052647145,
+      "2b": null,
+      "3a": null,
+      "3b": null,
+      "4a": -2.3301841142920603,
+      "4b": -3.299689440993789,
+      "5a": -2.3004370830457788,
+      "5b": null,
+      "5c": null,
+      "6a": null,
+      "6b": -21.439482961222108,
+      "6c": -2.111256401874251,
+      "7a": 15.345268542199488,
+      "7b": -3.424112119764294,
+      "7c": 22.33635929288104,
+      "7d": 36.568322981366464,
+      "8a": -18.964651077822435
+    },
+    "co2eKg": {
+      "1a": 16.632,
+      "1b": 20.019999999999996,
+      "1c": 27.488999999999997,
+      "2a": 12.936,
+      "2b": 0.0,
+      "3a": 0.0,
+      "3b": 0.0,
+      "4a": 48.23280000000001,
+      "4b": 61.599999999999994,
+      "5a": 83.16,
+      "5b": 0.0,
+      "5c": 0.0,
+      "6a": 0.0,
+      "6b": 397.0731707317071,
+      "6c": 35.112,
+      "7a": 52.36000000000001,
+      "7b": 120.11999999999999,
+      "7c": 40.03999999999999,
+      "7d": 30.799999999999997,
+      "8a": 209.44
+    },
+    "tier": {
+      "1a": "T1",
+      "1b": "T1",
+      "1c": "T1",
+      "2a": "T3",
+      "2b": null,
+      "3a": null,
+      "3b": null,
+      "4a": "T1",
+      "4b": "T1",
+      "5a": "T1",
+      "5b": null,
+      "5c": null,
+      "6a": null,
+      "6b": "T1",
+      "6c": "T1",
+      "7a": "T2",
+      "7b": "T1",
+      "7c": "T2",
+      "7d": "T2",
+      "8a": "T1"
+    },
+    "sums": {
+      "includedKg": 525.0068048780486,
+      "includedCostEur": -4469,
+      "includedCo2eKg": 1155.014970731707,
+      "tier1Kg": 463.12680487804863,
+      "tier1SavingsEur": -5654,
+      "tier2CostsEur": 1181,
+      "tier1Count": 10,
+      "tier2Count": 3,
+      "tier3Count": 1,
+      "excludedCount": 6
+    },
+    "sortedCodes": [
+      "6b",
+      "8a",
+      "7b",
+      "4b",
+      "4a",
+      "5a",
+      "6c",
+      "1c",
+      "1b",
+      "1a",
+      "2a",
+      "7a",
+      "7c",
+      "7d"
+    ]
+  }
+}

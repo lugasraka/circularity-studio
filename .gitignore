@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# build output
+.next/
+out/
+dist/
+
+# logs & env
+*.log
+.env
+.env.*
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
