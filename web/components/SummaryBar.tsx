@@ -1,6 +1,7 @@
 "use client";
 
 import { useStudio } from "@/lib/AppContext";
+import { GlossaryTip } from "./Glossary";
 
 export function SummaryBar() {
   const { factors, summary, state } = useStudio();
@@ -17,10 +18,10 @@ export function SummaryBar() {
     <div className="border-b border-mist bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2 sm:px-6">
         <span className="kpi text-[12px] font-semibold">
-          <span className="text-steel4">VM/US</span> {factors.vmUsPerYear.toFixed(3)} kg/yr
+          <GlossaryTip term="VM/US">VM/US</GlossaryTip> {factors.vmUsPerYear.toFixed(3)} kg/yr
         </span>
         <span className="kpi text-[12px]">
-          <strong>{kg.toFixed(0)} kg</strong> <span className="text-steel4">avoided · upper bound</span>
+          <strong>{kg.toFixed(0)} kg</strong> <span className="text-steel4">avoided · <GlossaryTip term="upper bound">upper bound</GlossaryTip></span>
         </span>
         <span className={`kpi text-[12px] font-semibold ${cost < 0 ? "text-save" : "text-cost"}`}>
           {cost < 0 ? "−" : ""}{sym}{Math.abs(cost).toLocaleString()}

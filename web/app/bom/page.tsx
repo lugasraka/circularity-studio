@@ -3,6 +3,7 @@
 import { Plus, Trash2, AlertTriangle } from "lucide-react";
 import { useStudio } from "@/lib/AppContext";
 import { validateInputs } from "@/lib/validation";
+import { GlossaryTip } from "@/components/Glossary";
 
 export default function BomPage() {
   const { state, factors: f, setBomRow, addBomRow, removeBomRow } = useStudio();
@@ -14,9 +15,8 @@ export default function BomPage() {
       <p className="kicker">Step 2 — Bill of materials</p>
       <h1 className="h-display mt-2 text-3xl font-semibold">What is the product made of?</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-steel2">
-        Component masses and virgin shares. Leave virgin share blank to use the global default
-        ({Math.round(state.inputs.virginShare * 100)}%) — set it per component when you can, e.g.
-        a 50% PCR housing.
+        Component masses and <GlossaryTip term="virgin">virgin shares</GlossaryTip>. Leave virgin share blank to use the global default
+        ({Math.round(state.inputs.virginShare * 100)}% <GlossaryTip term="Factor 1">(Factor 1)</GlossaryTip>) — set it per component when you can, e.g. a 50% PCR housing.
       </p>
       {bomErrs.length>0 && <div className="mt-3 flex items-center gap-2 rounded-xl border border-cost/30 bg-costbg p-3 text-[12px] text-cost font-semibold"><AlertTriangle size={14}/> {bomErrs.map(e=>e.message).join(" · ")}</div>}
 

@@ -8,6 +8,7 @@ import { useStudio } from "@/lib/AppContext";
 import { EChart } from "@/components/EChart";
 import { MaterialFlow } from "@/components/MaterialFlow";
 import { CostWaterfall } from "@/components/CostWaterfall";
+import { GlossaryTip } from "@/components/Glossary";
 import { cumulativeKg } from "@/lib/model";
 
 const SAVE = "#1f9d66";
@@ -199,10 +200,10 @@ export default function CurvePage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="kicker">Step 5 — The curve</p>
-          <h1 className="h-display mt-2 text-3xl font-semibold">Width is the kg avoided.</h1>
+          <h1 className="h-display mt-2 text-3xl font-semibold">Width is the <GlossaryTip term="€/kg">kg avoided</GlossaryTip>.</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-steel2">
-            Bar height is cost per kg avoided (negative = the lever pays for itself). Width is kg avoided
-            per 1,000 units. Hover any bar for the numbers. Currency: {currency} — change it on Profile.
+            Bar height is <GlossaryTip term="€/kg">€/kg</GlossaryTip> (negative = pays for itself). Width is kg avoided
+            per <GlossaryTip term="cohort">{state.inputs.cohortSize.toLocaleString()} units</GlossaryTip>. Hover any bar for numbers. Currency: {currency} — <GlossaryTip term="€/kg">{currency} on Profile</GlossaryTip>.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">

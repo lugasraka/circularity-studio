@@ -3,7 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { BookOpen } from "lucide-react";
 import { useStudio } from "@/lib/AppContext";
+import { GlossaryDrawer } from "./Glossary";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -19,6 +22,7 @@ const NAV = [
 export function SiteHeader() {
   const pathname = usePathname();
   const { resetToDrillExample, touched, preset, loadPreset } = useStudio();
+  const [glossaryOpen, setGlossaryOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-mist bg-paper/90 backdrop-blur">
@@ -60,7 +64,10 @@ export function SiteHeader() {
                 </Link>
               );
             })}
-            <button onClick={() => loadPreset(preset === "drill" ? "chair" : "drill")} title="Switch example product" className="ml-1 whitespace-nowrap rounded-full border border-mist bg-white px-3 py-1.5 text-[11px] font-semibold text-steel2 hover:text-ink">
+            <button onClick={() => setGlossaryOpen(true)} title="Open glossary" className="ml-1 flex items-center gap-1 whitespace-nowrap rounded-full border border-ink bg-ink px-3 py-1.5 text-[11px] font-semibold text-paper hover:bg-steel">
+              <BookOpen size={13} /> Glossary
+            </button>
+            <button onClick={() => loadPreset(preset === "drill" ? "chair" : "drill")} title="Switch example product" className="whitespace-nowrap rounded-full border border-mist bg-white px-3 py-1.5 text-[11px] font-semibold text-steel2 hover:text-ink">
               {preset === "drill" ? "Drill ▾" : "Chair ▾"}
             </button>
             {touched && (
@@ -75,6 +82,7 @@ export function SiteHeader() {
           </nav>
         </div>
       </div>
+      <GlossaryDrawer open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
     </header>
   );
 }

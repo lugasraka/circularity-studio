@@ -9,6 +9,7 @@ import { validateInputs } from "@/lib/validation";
 import { Link2, Upload, Download, TrendingUp } from "lucide-react";
 import { copyShareLink, exportStateJson, importStateJson } from "@/lib/share";
 import { TornadoChart } from "@/components/TornadoChart";
+import { GlossaryTip } from "@/components/Glossary";
 
 const CONFIDENCES: Confidence[] = ["High", "Medium", "Low", "—"];
 
@@ -51,8 +52,8 @@ export default function QuantifyPage() {
       <p className="kicker">Step 4 — Quantify the levers</p>
       <h1 className="h-display mt-2 text-3xl font-semibold">kg comes from the model. Costs are analyst input.</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-steel2">
-        Two lenses: <strong>Impact</strong> (kg avoided, €/kg) and <strong>Effort</strong> (Δcost, confidence, basis).
-        Switch views instead of scrolling sideways.
+        Two lenses: <strong>Impact</strong> (kg avoided, <GlossaryTip term="€/kg">€/kg</GlossaryTip>) and <strong>Effort</strong> (Δcost, confidence, basis).
+        Switch views instead of scrolling sideways. <GlossaryTip term="upper bound">Σ is an upper bound</GlossaryTip> — package builder on Decision fixes double-counting.
       </p>
 
       {errs.length > 0 && (
