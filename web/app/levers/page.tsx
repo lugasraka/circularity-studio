@@ -23,6 +23,9 @@ export default function LeversPage() {
           <p className="kpi font-display text-4xl font-semibold text-steel2">{inc}<span className="text-lg text-steel4">/20</span></p>
           <p className="text-[11px] font-semibold uppercase leading-tight tracking-widest text-steel3">Screened<br />in</p>
         </div>
+        {inc === 0 && (
+          <p className="text-[11px] font-semibold text-cost">All 20 levers are parked — flip a gate back to Y to redraw the curve.</p>
+        )}
       </div>
 
       <div className="mt-8 space-y-8">

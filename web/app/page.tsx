@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, CircleDot, Sigma, Layers3, Route } from "lucide-react";
 
 export const metadata = {
@@ -9,8 +10,25 @@ export default function HomePage() {
   return (
     <>
       {/* ---------- hero ---------- */}
-      <section className="hero-bg text-[#f7f5f0]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="relative overflow-hidden bg-ink text-[#f7f5f0]">
+        <Image
+          src="/brand/hero-loop.webp"
+          alt=""
+          fill
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+          className="object-cover object-right"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(101deg, rgba(14,31,56,0.96) 0%, rgba(14,31,56,0.88) 34%, rgba(14,31,56,0.38) 68%, rgba(14,31,56,0.12) 100%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex min-h-[78vh] flex-col justify-center py-16">
             <p className="kicker !text-amber">Circularity Studio</p>
             <h1 className="h-display mt-4 max-w-3xl text-5xl font-semibold leading-[1.02] text-[#f7f5f0] sm:text-6xl">

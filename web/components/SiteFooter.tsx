@@ -26,10 +26,10 @@ export function SiteFooter() {
             >
               <Code2 size={13} strokeWidth={2} /> Source
             </a>
-            <span className="text-paper/40">Illustrative values — verify with your own data</span>
+            <span className="text-paper/60">Illustrative values — verify with your own data</span>
           </div>
         </div>
-        <p className="mt-6 border-t border-white/10 pt-4 text-[11px] text-paper/40">
+        <p className="mt-6 border-t border-white/10 pt-4 text-[11px] text-paper/60">
           Built on the Circularity Decision Framework (docs/circularity-decision-framework.md).
           Base curve = cost + EBIT impact only; revenue upside is deliberately excluded.
         </p>

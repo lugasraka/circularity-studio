@@ -26,7 +26,7 @@ export function SiteHeader() {
         <div className="flex h-14 items-center gap-4">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image
-              src="/brand/logo-mark.png"
+              src="/brand/logo-mark.webp"
               alt="Circularity Studio"
               width={30}
               height={30}

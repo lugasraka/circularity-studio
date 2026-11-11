@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/assets/logo-mark.png" width="72" alt="Circularity Studio — a broken loop"></p>
 
-Live: <https://circularity-studio.vercel.app/>
+Live: <https://circularity-studio.vercel.app/> · ![CI](https://github.com/lugasraka/circularity-studio/actions/workflows/ci.yml/badge.svg)
 
 # Circularity Studio
 

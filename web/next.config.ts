@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // static export for the demo build; `npm run dev` is unaffected
   output: "export",
   images: { unoptimized: true },
+  productionBrowserSourceMaps: true,
   turbopack: {
     rules: {
       "*.css": {

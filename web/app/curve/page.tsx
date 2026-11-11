@@ -2,7 +2,8 @@
 
 import { useMemo, useRef, useState } from "react";
 import type * as echarts from "echarts";
-import { Download, Info, LineChart } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Download, Info, LineChart } from "lucide-react";
 import { useStudio } from "@/lib/AppContext";
 import { EChart } from "@/components/EChart";
 import { cumulativeKg } from "@/lib/model";
@@ -34,6 +35,7 @@ export default function CurvePage() {
     });
   }, [sorted, variant]);
 
+  const xMax = Math.max(1, Math.ceil(totalKg * 1.02));
   const option = useMemo<echarts.EChartsCoreOption>(
     () => ({
       animationDuration: 450,
@@ -62,7 +64,7 @@ export default function CurvePage() {
       xAxis: {
         type: "value",
         min: 0,
-        max: Math.ceil(totalKg * 1.02),
+        max: xMax,
         name: "Virgin material avoided — cumulative, kg per 1,000 units",
         nameLocation: "middle",
         nameGap: 32,
@@ -84,7 +86,7 @@ export default function CurvePage() {
           type: "value",
           name: "kg cumulative",
           min: 0,
-          max: Math.ceil(totalKg * 1.02),
+          max: xMax,
           show: showCumulative,
           nameTextStyle: { color: "#77808d", fontSize: 11 },
           splitLine: { show: false },
@@ -160,6 +162,25 @@ export default function CurvePage() {
 
   const currency = variant === "A" ? "$" : "€";
   const excludedLevers = levers.filter((l) => !l.included).map((l) => l.code);
+
+  if (sorted.length === 0) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+        <p className="kicker">Step 5 — The curve</p>
+        <h1 className="h-display mt-2 text-3xl font-semibold">Nothing on the curve yet.</h1>
+        <div className="card mt-6 max-w-2xl p-10 text-center">
+          <p className="font-display text-2xl font-semibold text-ink">No levers are screened in.</p>
+          <p className="mt-3 text-sm leading-relaxed text-steel2">
+            Every lever has at least one “N” in the gate screening. Switch on the ones that apply —
+            the curve, the tiers and the totals will redraw themselves.
+          </p>
+          <Link href="/levers" className="btn btn-primary mt-6">
+            Screen the levers <ArrowRight size={15} />
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
@@ -260,3 +281,4 @@ export default function CurvePage() {
     </div>
   );
 }
+
