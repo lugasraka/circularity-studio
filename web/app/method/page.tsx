@@ -42,8 +42,15 @@ export default function MethodPage() {
       <h1 className="h-display mt-2 text-4xl font-semibold">How the framework thinks</h1>
       <p className="mt-3 max-w-2xl leading-relaxed text-steel2">
         One decomposition, one curve, three tiers. The full written method lives in
-        <code className="mx-1 rounded bg-mist px-1.5 py-0.5 text-[12px]">docs/circularity-decision-framework.md</code>
-        — use it when someone challenges a number.
+        <a
+          href="https://github.com/lugasraka/circularity-studio/blob/main/docs/circularity-decision-framework.md"
+          target="_blank"
+          rel="noreferrer"
+          className="mx-1 text-steel2 underline underline-offset-2 hover:text-ink"
+        >
+          docs/circularity-decision-framework.md
+        </a>
+        — read it when someone challenges a number.
       </p>
 
       {/* ============ the identity ============ */}

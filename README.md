@@ -1,5 +1,7 @@
 <p align="center"><img src="docs/assets/logo-mark.png" width="72" alt="Circularity Studio — a broken loop"></p>
 
+Live: <https://circularity-studio.vercel.app/>
+
 # Circularity Studio
 
 A reusable decision framework for circularity levers on products — and a web app that applies it end to end.

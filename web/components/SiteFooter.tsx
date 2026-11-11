@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Code2 } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -17,6 +18,14 @@ export function SiteFooter() {
             <Link href="/method" className="hover:text-amber">Method &amp; caveats</Link>
             <Link href="/curve" className="hover:text-amber">The curve</Link>
             <Link href="/decision" className="hover:text-amber">Decision tiers</Link>
+            <a
+              href="https://github.com/lugasraka/circularity-studio"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 hover:text-amber"
+            >
+              <Code2 size={13} strokeWidth={2} /> Source
+            </a>
             <span className="text-paper/40">Illustrative values — verify with your own data</span>
           </div>
         </div>
